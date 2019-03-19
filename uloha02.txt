@@ -1,0 +1,13 @@
+1. Shift n se neprovede, pokud je pocet zadanych argumentu mensi nez n (shift 3 volame se 2 argumenty d,e).
+
+
+2.
+$#               pocet argumentu
+${#promenna}     pocet znaku
+${!i}            pokud je i-ty argument cislo j, vrati j-ty argument
+${i:-vyraz}      pokud je zadany i-ty argument, vrati ho; jinak vrati vyraz
+${i:j}           i-ty argument bez prvnich j znaku
+${i:j:k}         prvnich k znaku z predchoziho (podretezec znaku na pozicich j+1, ..., j+k+1)
+
+${i/vyraz/text}  nahradi prvni vyskyt vyrazu textem v i-tem argumentu
+${i//vyraz/text} nahradi vsechny vyskyty vyrazu textem v i-tem argumentu
