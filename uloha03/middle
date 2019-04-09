@@ -1,5 +1,4 @@
 #!/bin/sh
-
 fl()
 {
         IFS=-
@@ -40,24 +39,33 @@ fp()
         
 }
 
-text=$(cat)
+
 case "$1" in
-        --l)
+        --l|--lines)
+                if [ "$#" == 2 ]; then
+                        text=$(cat)
+                elif [ "$#" == 3 ]; then
+                        text=$(cat "$3")
+                fi
                 fl "$2"
                 ;;
-        --lines)
-                fl "$2"
-                ;;
-        --f)
+        --f|--fraction)
+                if [ "$#" == 3 ]; then
+                        text=$(cat)
+                elif [ "$#" == 4 ]; then
+                        text=$(cat "$4")
+                fi
                 ff "$2" "$3"
                 ;;
-        --fraction)
-                fl "$2" "$3"
-                ;;
-        --p)
+        
+        --p|--part)
+                if [ "$#" == 2 ]; then
+                        text=$(cat)
+                elif [ "$#" == 3 ]; then
+                        text=$(cat "$3")
+                fi
                 fp "$2"
                 ;;
-        --part)
-                fp "$2"
-                ;;
+        
 esac
+
