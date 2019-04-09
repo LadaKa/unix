@@ -1,0 +1,17 @@
+#!/bin/sh
+
+text=$(cat)
+c=`echo "$text"|wc -l`
+if [ "$#" == 0 ]; then
+        a=1
+elif [ "$#" == 2 ]; then
+        a="$2"
+fi
+while [ ${#text} -ge 2 ]
+do
+  text2=$( echo "$text" | head -n "$c")
+  text=$text2
+  echo "$text" | tail -n "$a"
+  c=$(( c - a ))
+done
+
