@@ -1,0 +1,63 @@
+#!/bin/sh
+
+fl()
+{
+        IFS=-
+        arr=($1)
+        m="${arr[0]}";
+        n="${arr[1]}";
+        t=$(( n - m + 1 ))
+        echo "$text"|tail -n +"$m" | head -n "$t"
+        
+}
+ff()
+{
+        IFS=/
+        arr=($1)
+        a="${arr[0]}";
+        b="${arr[1]}";
+        n=`echo "$text"|wc -l`
+        a=$(( ( n * a ) / b ))
+        IFS=/
+        arr=($2)
+        c="${arr[0]}";
+        d="${arr[1]}";
+        c=$(( ( n * c ) / d ))
+        t=$(( c - a + 1 ))
+        echo "$text"|tail -n +"$a" | head -n "$t"
+        
+}
+fp()
+{
+        IFS=/
+        arr=($1)
+        a="${arr[0]}";
+        b="${arr[1]}";
+        n=`echo "$text"|wc -l`
+        t=$(( n / b ))
+        a=$(( ( a * t ) - 1 ))
+        echo "$text"|tail -n +"$a" | head -n "$t"
+        
+}
+
+text=$(cat)
+case "$1" in
+        --l)
+                fl "$2"
+                ;;
+        --lines)
+                fl "$2"
+                ;;
+        --f)
+                ff "$2" "$3"
+                ;;
+        --fraction)
+                fl "$2" "$3"
+                ;;
+        --p)
+                fp "$2"
+                ;;
+        --part)
+                fp "$2"
+                ;;
+esac
