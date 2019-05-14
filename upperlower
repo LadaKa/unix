@@ -1,0 +1,32 @@
+#!/bin/sh
+ftolower()
+{
+        lname=$(basename "$1" | tr 'A-Z' 'a-z');
+        lpath=$(dirname "$1")'/'$lname;
+        echo $lpath;
+        [ -f "$lpath" ] && echo "Kolize na soubor $lpath" || mv "$1" "$lpath";
+}
+
+ftoupper()
+{
+        lname=$(basename "$1" | tr 'a-z' 'A-Z');
+        lpath=$(dirname "$1")'/'$lname;
+        echo $lpath;
+        [ -f "$lpath" ] && echo "Kolize na soubor $lpath" || mv "$1" "$lpath";
+}
+
+r=false
+while test $# -gt 0
+do
+    if [ "$1" == "-r" ]; then r=true;
+    elif [ "$r" == true ]; then
+    {
+        for myfile in $(find . -type f -name '[^a-z]*'); do ftolower "$myfile"; done;
+    }
+    else
+    {
+        for myfile in $(find . -type f -name '[^A-Z]*'); do ftoupper "$myfile"; done;
+    }
+    fi;
+    shift;
+done
