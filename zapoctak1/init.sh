@@ -3,9 +3,8 @@
 mkdir "./$1/kontrolovac";
 cd "./$1/kontrolovac";
 mkdir "./ukoly" "./studenti";
-for i in 1.."$2"; do
-        mkdir "./ukoly/ukol_$i";
-done;
+mkdir "./ukoly/ukol_{1..$2}";
+mkdir "./ukoly/tmp";
 touch "./ukoly/repozitare.txt";
-cat "$3" > "./ukoly/repozitare.txt";
 cd ../..;
+cat "$3" > "./$1/kontrolovac/ukoly/repozitare.txt";
