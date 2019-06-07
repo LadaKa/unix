@@ -6,17 +6,18 @@ test_updated()
         for dir in ./ukol*/; do
                 dirname=$(basename "$dir")
                 echo $dir;
-                if [ "./kontroly/$1/$dirname" -nt "$3/$dirname" ]; then
+                echo "EQ:""./kontroly/$1/$dirname""X""$3/$dirname""X"
+                if [ "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
                         echo "newer";
                         for ukol in $dir*".in"; do
-                                jmeno_ukolu=`echo $ukol|sed "s/in$/out/"|sed "s/^.\\///"`;
+                                jmeno_ukolu=`echo $ukol|sed "s/.in$//"|sed "s/^.\\///"`;
                                 echo "ukol:$jmeno_ukolu"
                                 ./runtest.sh $name $dirname $jmeno_ukolu;
                         done;
                         touch "./kontroly/$name/$dirname";
                         errorfile="./tmp/msg_""$1"
                         if [ -e "$errorfile" ]; then
-                               # mail -s "Chyby v domacich ulohach" "$2" < "$errorfile";
+                               mail -s "Chyby v domacich ulohach" "$2" < "$errorfile";
                                echo "Chyby v domacich ulohach";
                                cat "$errorfile";
                                echo "konec";
