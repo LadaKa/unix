@@ -5,7 +5,7 @@
 #               "kontrolovac/studenti/gity/[NAME]/[UKOL_N/JMENO_UKOLU].sh"
 #       se vstupem 
 #               "kontrolovac/ukoly/[UKOL_N/JMENO_UKOLU].in"
-#       (pomoci kontrolovac/ukolytest.sh)
+#       (pomoci kontrolovac/ukoly/test.sh)
 #       a porovna ho s 
 #               "kontrolovac/ukoly/[UKOL_N/JMENO_UKOLU].out"
 
