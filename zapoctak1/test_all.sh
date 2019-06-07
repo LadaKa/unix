@@ -27,11 +27,12 @@ while IFS=" " read -r name mail repo
 do
         localrepo="../studenti/gity/$name";
         if [ ! -d "$localrepo" ]; then
+                echo "$repo $localrepo";
                 git clone $repo $localrepo;
         else
-                cd "$localrepo"; 
+                cd "$localrepo";
                 git pull $repo;
                 cd "../../../ukoly";
         fi;
         test_updated $name $mail $localrepo;
-done < repositare.txt
+done < repozitare.txt
