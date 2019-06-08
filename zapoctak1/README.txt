@@ -24,7 +24,7 @@ Pouziti:
 
         Soubory pro "podukol" z "ukol_N" je potreba ulozit jako
                 "kontrolovac/ukoly/ukol_N/podukol.in",
-                "kontrolovac/ukoly/ukol_N/podukol.in".
+                "kontrolovac/ukoly/ukol_N/podukol.out".
 
 
 4. Spusteni kontroly ukolu:
