@@ -1,5 +1,6 @@
 #!/bin/sh
 #
+# init.sh --help
 # init.sh [ADRESAR] [POCET UKOLU] [SOUBOR SE JMENY, E-MAILY A GIT REPOZITARI STUDENTU]
 
 if [ "$1" = "--help" ];then
@@ -10,7 +11,7 @@ if [ "$1" = "--help" ];then
         echo "          kontrolovac/ukoly_01, ..., kontrolovac/ukoly_[POCET UKOLU]";
         echo "          kontrolovac/ukoly/tmp";
         echo "          kontrolovac/studenti/gity";
-        echo "Zkopiruje do kontrolovac/ukolyrepozitare.txt [SOUBOR SE JMENY, E-MAILY A GIT REPOZITARI STUDENTU].";
+        echo "Zkopiruje do kontrolovac/ukoly/repozitare.txt [SOUBOR SE JMENY, E-MAILY A GIT REPOZITARI STUDENTU].";
         exit;
 fi;
 wd=$(pwd);
