@@ -5,12 +5,12 @@
 if [ "$1" = "--help" ];then
         echo "init.sh [ADRESAR] [POCET UKOLU] [SOUBOR SE JMENY, E-MAILY A GIT REPOZITARI STUDENTU]";
         echo "Vytvori nasledujici adresare v ADRESAR:";
-        echo "          kontrolovac (pokud uz existuje ADRESAR/kontrolovac, vypise se chybove hlaseni)";
+        echo "          kontrolovac (pokud uz existuje [ADRESAR]/kontrolovac, vypise se chybove hlaseni)";
         echo "          kontrolovac/ukoly";
-        echo "          kontrolovac/ukoly_01, ..., kontrolovac/ukoly_POCET UKOLU";
+        echo "          kontrolovac/ukoly_01, ..., kontrolovac/ukoly_[POCET UKOLU]";
         echo "          kontrolovac/ukoly/tmp";
         echo "          kontrolovac/studenti/gity";
-        echo "Zkopiruje do kontrolovac/ukoly SOUBOR SE JMENY, E-MAILY A GIT REPOZITARI STUDENTU.";
+        echo "Zkopiruje do kontrolovac/ukolyrepozitare.txt [SOUBOR SE JMENY, E-MAILY A GIT REPOZITARI STUDENTU].";
         exit;
 fi;
 wd=$(pwd);
