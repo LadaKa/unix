@@ -3,36 +3,102 @@
 # kontrolovac/ukoly/test_all.sh 
 #       Provadi klonovani a aktualizaci repozitaru a testovani reseni, ktera byla nove odevzdana do gitu.
 #       Udaje o studentech cte z kontrolovac/ukoly/repozitare.txt.
-#       Pro testovani jednotlivych studentu a odeslani e-mailu se pouziva funkce test_updated().
+#       Pro testovani jednotlivych studentu a odeslani e-mailu se pouziva funkce test_updated() a run_test()
 
 
-# test_updated() [NAME] [MAIL] [LOCALREPO]
+# test_updated [NAME] [MAIL] [LOCALREPO]
 #       Testuje reseni, ktera student nove odevzdal do  gitu (jsou nove v LOCALREPO). 
 #       Cas posledni kontroly jednotlivych ukolu reprezentuji soubory:
 #               kontrolovac/ukoly/kontroly/NAME/ukol_01, ..., kontrolovac/ukoly/kontroly/NAME/ukol_N.
 #       Vytvori docasny soubor msg_NAME v kontrolovac/ukoly/tmp pro zapis pripadnych chyb a informace 
 #       o chybach odesle na na MAIL.
+
 test_updated()
 {
+        vysledek=$name/t;
+        soucet=0;
         for dir in ./ukol*/; do
+                body=0;
                 dirname=$(basename "$dir");
-                if [ "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
-                        for ukol in $dir*".in"; do
+             #   if [ "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
+             echo "DIR:x$dir";
+             if [ ! "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
+                        for ukol in $(find $dir -name "*.in"); do
+                                echo "ukol:x$ukol";
                                 jmeno_ukolu=`echo $ukol|sed "s/.in$//"|sed "s/^.\\///"`;
-                                ./runtest.sh $name $jmeno_ukolu;
+                                echo "jmeno_ukolu:x$jmeno_ukolu";
+                                run_test $name $jmeno_ukolu;
                         done;
                         touch "./kontroly/$name/$dirname";
-                        errorfile="./tmp/msg_""$1"
-                        if [ -e "$errorfile" ]; then
-                               mail -s "Chyby v domacich ulohach" "$2" < "$errorfile";
-                               rm "$errorfile";
-                        fi;
+                        soucet=$(( $soucet + $body ));
+                        vysledek="$vysledek\t\t$body";
+                else
+                        vysledek="$vysledek\t\t-";
                 fi;
         done;
+        errorfile="./tmp/msg_""$1";
+        if [ -e "$errorfile" ]; then
+                mail -s "Chyby v domacich ulohach" "$2" < "$errorfile";
+                rm "$errorfile";
+        fi;
+        echo -e "$vysledek" >> vysledky.txt;
+}
+
+
+# run_test [NAME] [UKOL_N/JMENO_UKOLU]
+#       Provede spusteni skriptu
+#               "kontrolovac/studenti/gity/[NAME]/[UKOL_N/JMENO_UKOLU].sh"
+#       se vstupem 
+#               "kontrolovac/ukoly/[UKOL_N/JMENO_UKOLU].in"
+#       (pomoci kontrolovac/ukoly/test.sh)
+#       a porovna ho s 
+#               "kontrolovac/ukoly/[UKOL_N/JMENO_UKOLU].out"
+
+run_test()
+{
+        input=$2".in";
+        output=$(./test.sh "../studenti/gity/$1/$2.sh" < $input);
+        out="$2.out";
+        if ! (cmp -s "$output" "$out"); then
+                echo "Error in $2.sh." >> "./tmp/msg_$1";
+        else
+                pricti_body "$2.points";
+        fi;
+}
+
+
+# pricti_body [JMENO_UKOLU.points]
+#       Pricte k bodum hodnotu uvedenou v souboru JMENO_UKOLU.points, 
+#       nebo pricte jednicku, pokud soubor neexistuje.
+
+pricti_body()
+{
+        if [ -e "$1" ];then
+                read -r x<"$1";
+                        body=$(( $x + $body ));
+                else
+                        body=$(( 1 + $body ));
+                fi;  
 }
 
 # kontrolovac/ukoly/test_all.sh
-
+touch vysledky.txt;
+text="jmeno\t";
+points="maximum\t";
+soucet=0;
+for ukol in ./ukol*; do
+        text="$text\t$ukol";
+        body=0;
+        for podukol in $ukol/*".points"; do
+                pricti_body "$podukol";
+        done;
+        soucet=$(( $soucet + $body ));
+        points="$points\t\t$body";
+done;
+text="$text\tsoucet";
+points="$points\t\t$soucet";
+echo -e "$text" > vysledky.txt;
+echo -e "$points" >> vysledky.txt;
 while IFS=" " read -r name mail repo
 do
         localrepo="../studenti/gity/$name";
