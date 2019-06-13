@@ -3,7 +3,6 @@ ftolower()
 { 
         lname=$(basename "$1" | tr 'A-Z' 'a-z');
         lpath=$(dirname "$1")'/'$lname;
-        echo $lpath;
         [ -f "$lpath" ] && echo "Kolize na soubor $lpath" || mv "$1" "$lpath";
 }
 
@@ -11,22 +10,25 @@ ftoupper()
 { 
         lname=$(basename "$1" | tr 'a-z' 'A-Z');
         lpath=$(dirname "$1")'/'$lname;
-        echo $lpath;
         [ -f "$lpath" ] && echo "Kolize na soubor $lpath" || mv "$1" "$lpath";
 }
 
-r=false
-if [ $# -eq 0 ] || [ $# -eq 1 ] && [ "$1" == "-r" ]; then 
+r=false;
+if [ $# -eq 0 ] || ( [ $# -eq 1 ] && [ "$1" == "-r" ] ); then 
 {
         if [ "$1" == "-r" ]; then 
         {
-                for myfile in $(find . -type f -not -name "[A-Z]*"); 
-                        do ftoupper "$myfile"; done;
+                for myfile in $(find . -type f -not -regex '.*/[^/]*[A-Z][^/]*'); 
+                        do 
+                        ftoupper "$myfile";
+                        done;
         };
         else 
         {
-                for myfile in $(find . -type f -not -name "[a-z]*");
-                        do ftolower "$myfile"; done;
+                for myfile in $(find . -type f -not -regex '.*/[^/]*[a-z][^/]*');
+                        do 
+                        ftolower "$myfile"; 
+                        done;
         }
         fi;
         
@@ -37,15 +39,18 @@ do
     if [ "$1" == "-r" ]; then r=true; 
     elif [ "$r" == true ]; then 
     {
-        for myfile in $(find "$1" -type f -not -name "[A-Z]*"); 
-                do ftoupper "$myfile"; done;
+        for myfile in $(find "$1" -type f -not -regex '.*/[^/]*[A-Z][^/]*'); 
+                do
+                ftoupper "$myfile"; 
+                done;
     }
     else 
     {
-        for myfile in $(find "$1" -type f -not -name "[a-z]*");
-                do ftolower "$myfile"; done;
+        for myfile in $(find "$1" -type f -not -regex '.*/[^/]*[a-z][^/]*');
+                do 
+                ftolower "$myfile"; 
+                done;
     }
     fi;
     shift;
 done
-
