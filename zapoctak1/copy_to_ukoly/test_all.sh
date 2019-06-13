@@ -1,9 +1,12 @@
 #!/bin/sh
 #
 # kontrolovac/ukoly/test_all.sh 
-#       Provadi klonovani a aktualizaci repozitaru a testovani reseni, ktera byla nove odevzdana do gitu.
-#       Udaje o studentech cte z kontrolovac/ukoly/repozitare.txt.
-#       Pro testovani jednotlivych studentu a odeslani e-mailu se pouziva funkce test_updated() a run_test()
+#       Provadi klonovani a aktualizaci repozitaru a testovani reseni, ktera 
+#       byla nove odevzdana do gitu.
+#       Udaje o studentech cte z kontrolovac/ukoly/repozitare.txt, vysledky se
+#       zapisuji do kontrolovac/ukoly/vysledky.txt
+#       Pro testovani jednotlivych studentu a odeslani e-mailu se pouzivaji
+#       funkce test_updated() a run_test().
 
 
 # test_updated [NAME] [MAIL] [LOCALREPO]
@@ -17,17 +20,17 @@ test_updated()
 {
         vysledek="$name\t";
         soucet=0;
-        for dir in ./ukol*/; do
+        for dir in $(find ./ukol_* -prune); do
                 body=0;
                 dirname=$(basename "$dir");
              #   if [ "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
              
-             if [ ! "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
+            if [ ! "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
                         for ukol in $(find $dir -name "*.in"); do
                                 jmeno_ukolu=`echo $ukol|sed "s/.in$//"|sed "s/^.\\///"`;
                                 run_test $name $jmeno_ukolu;
                         done;
-                        touch "./kontroly/$name/$dirname";
+                        touch "./kontroly/$1/$dirname";
                         soucet=$(( $soucet + $body ));
                         vysledek="$vysledek\t\t$body";
                 else
@@ -55,14 +58,12 @@ test_updated()
 run_test()
 {
         input=$2".in";
-        output=$(./test.sh "../studenti/gity/$1/$2.sh" < $input);
+        ./test.sh "../studenti/gity/$1/$2.sh" < $input > "./tmp/output";
         out="$2.out";
-        if ! (cmp -s "$output" "$out"); then
+        if ! (cmp -s "./tmp/output" "$out"); then
                 echo "Error in $2.sh." >> "./tmp/msg_$1";
-                echo "Error in $2.sh." ;
         else
-                pricti_body "$2.points";
-                echo "Body $body in $2.sh." 
+                pricti_body "$2.points"; 
         fi;
 }
 
@@ -110,4 +111,5 @@ do
                 cd "../../../ukoly";
         fi;
         test_updated $name $mail $localrepo;
-done < repozitare.txt
+done < repozitare.txt;
+rm "./tmp/output";

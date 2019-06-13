@@ -12,6 +12,7 @@ Pouziti:
                 kontrolovac/ukoly_01, ..., kontrolovac/ukoly_[POCET UKOLU]
                 kontrolovac/ukoly/tmp
                 kontrolovac/studenti/gity
+                kontrolovac/ukoly/kontroly
         Zkopiruje do "kontrolovac/ukoly/repozitare.txt" [SOUBOR SE JMENY, E-MAILY A GIT REPOZITARI STUDENTU].
 
 
@@ -24,7 +25,12 @@ Pouziti:
 
         Soubory pro "podukol" z "ukol_N" je potreba ulozit jako
                 "kontrolovac/ukoly/ukol_N/podukol.in",
-                "kontrolovac/ukoly/ukol_N/podukol.out".
+                "kontrolovac/ukoly/ukol_N/podukol.out",
+                "kontrolovac/ukoly/ukol_N/podukol.points".
+        Pokud neni ulozen soubor "podukol.points", je "podukol" ohodnocen 1 bodem.
+        
+        Pro pridavani novych ukolu a vytvoreni odpovidajici struktury slouzi skript
+        add_ukol.sh [POCET NOVYCH UKOLU].
 
 
 4. Spusteni kontroly ukolu:
