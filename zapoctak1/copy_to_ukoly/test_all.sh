@@ -15,18 +15,16 @@
 
 test_updated()
 {
-        vysledek=$name/t;
+        vysledek="$name\t";
         soucet=0;
         for dir in ./ukol*/; do
                 body=0;
                 dirname=$(basename "$dir");
              #   if [ "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
-             echo "DIR:x$dir";
+             
              if [ ! "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
                         for ukol in $(find $dir -name "*.in"); do
-                                echo "ukol:x$ukol";
                                 jmeno_ukolu=`echo $ukol|sed "s/.in$//"|sed "s/^.\\///"`;
-                                echo "jmeno_ukolu:x$jmeno_ukolu";
                                 run_test $name $jmeno_ukolu;
                         done;
                         touch "./kontroly/$name/$dirname";
@@ -41,7 +39,7 @@ test_updated()
                 mail -s "Chyby v domacich ulohach" "$2" < "$errorfile";
                 rm "$errorfile";
         fi;
-        echo -e "$vysledek" >> vysledky.txt;
+        echo -e "$vysledek\t\t$soucet" >> vysledky.txt;
 }
 
 
@@ -61,8 +59,10 @@ run_test()
         out="$2.out";
         if ! (cmp -s "$output" "$out"); then
                 echo "Error in $2.sh." >> "./tmp/msg_$1";
+                echo "Error in $2.sh." ;
         else
                 pricti_body "$2.points";
+                echo "Body $body in $2.sh." 
         fi;
 }
 
