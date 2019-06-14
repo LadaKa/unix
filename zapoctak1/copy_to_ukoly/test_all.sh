@@ -56,7 +56,7 @@ test_updated()
 
 run_test()
 {
-        input=$2".in";
+        input="$2.in";
         ./test.sh "../studenti/gity/$1/$2.sh" < $input > "./tmp/output";
         out="$2.out";
         if ! (cmp -s "./tmp/output" "$out"); then
@@ -111,4 +111,5 @@ do
         fi;
         test_updated $name $mail $localrepo;
 done < repozitare.txt;
+touch "./tmp/output";
 rm "./tmp/output";
