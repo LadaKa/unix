@@ -11,7 +11,6 @@ if [ $# = 0 ];then
 elif ! [[ $1 =~ ^[0-9]+$ ]]; then
    echo "Chyba: zadany parametr neni cislo." >&2; exit 1;
 else
-        max=$(( $min + $1 ));
+        max=$(( $min + $1 - 1));
 fi;
 mkdir $(printf "ukol_%02i " $(seq -s ' ' $min $max));
-mkdir $(printf "kontroly/ukol_%02i " $(seq -s ' ' $min $max));

@@ -23,10 +23,11 @@ test_updated()
         for dir in $(find ./ukol_* -prune); do
                 body=0;
                 dirname=$(basename "$dir");
+                
                 if [ "$3/$dirname" -nt "./kontroly/$1/$dirname" ]; then
                         for ukol in $(find $dir -name "*.in"); do
-                                jmeno_ukolu=`echo $ukol|sed "s/.in$//"|sed "s/^.\\///"`;
-                                run_test $name $jmeno_ukolu;
+                                jmeno_ukolu=`echo "$ukol"|sed "s/.in$//"|sed "s/^.\\///"`;
+                                run_test $name "$jmeno_ukolu";
                         done;
                         touch "./kontroly/$1/$dirname";
                         soucet=$(( $soucet + $body ));
