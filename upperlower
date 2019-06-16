@@ -18,14 +18,14 @@ if [ $# -eq 0 ] || ( [ $# -eq 1 ] && [ "$1" == "-r" ] ); then
 {
         if [ "$1" == "-r" ]; then 
         {
-                for myfile in $(find . -type f -not -regex '.*/[^/]*[A-Z][^/]*'); 
+                for myfile in $(find .  -type f  -regex '.*/[^A-Z]*'); 
                         do 
                         ftoupper "$myfile";
                         done;
         };
         else 
         {
-                for myfile in $(find . -type f -not -regex '.*/[^/]*[a-z][^/]*');
+                for myfile in $(find .  -type f  -regex '.*/[^a-z]*');
                         do 
                         ftolower "$myfile"; 
                         done;
@@ -39,14 +39,14 @@ do
     if [ "$1" == "-r" ]; then r=true; 
     elif [ "$r" == true ]; then 
     {
-        for myfile in $(find "$1" -type f -not -regex '.*/[^/]*[A-Z][^/]*'); 
+        for myfile in $(find "$1" -type f -regex '.*/[^A-Z]*'); 
                 do
                 ftoupper "$myfile"; 
                 done;
     }
     else 
     {
-        for myfile in $(find "$1" -type f -not -regex '.*/[^/]*[a-z][^/]*');
+        for myfile in $(find "$1" -type f -regex '.*/[^a-z]*');
                 do 
                 ftolower "$myfile"; 
                 done;
