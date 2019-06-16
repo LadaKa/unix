@@ -10,9 +10,11 @@ ftoupper()
 { 
         lname=$(basename "$1" | tr 'a-z' 'A-Z');
         lpath=$(dirname "$1")'/'$lname;
+        
         [ -f "$lpath" ] && echo "Kolize na soubor $lpath" || mv "$1" "$lpath";
 }
 
+IFS=$'\n' ;
 r=false;
 if [ $# -eq 0 ] || ( [ $# -eq 1 ] && [ "$1" == "-r" ] ); then 
 {
